@@ -1,0 +1,30 @@
+# futur3 runtime dependencies — free-first.
+# Pinned floor-versions; install in dev venv via `pip install -r requirements.txt`.
+# For locked reproducible versions, use pip-compile (Phase A1+).
+
+# Broker / data
+ib_async>=2.0.1
+curl_cffi>=0.7.0
+requests>=2.32
+websockets>=13.0
+ccxt>=4.4
+
+# Storage + query
+pyarrow>=16.0
+polars>=1.0
+duckdb>=1.2
+
+# Time + TZ (tzdata CRITICAL on Windows)
+python-dateutil>=2.9
+tzdata>=2024.1
+
+# Stats
+numpy>=2.0
+scipy>=1.13
+
+# Dev (also installable via `pip install -e .[dev]`)
+pytest>=8.0
+pytest-asyncio>=0.23
+hypothesis>=6.100
+mypy>=1.10
+ruff>=0.5

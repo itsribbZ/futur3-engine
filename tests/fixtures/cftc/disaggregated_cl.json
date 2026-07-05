@@ -1,0 +1,46 @@
+[
+  {
+    "report_date_as_yyyy_mm_dd": "2026-04-28T00:00:00.000",
+    "cftc_contract_market_code": "067651",
+    "market_and_exchange_names": "WTI FINANCIAL CRUDE OIL - NEW YORK MERCANTILE EXCHANGE",
+    "open_interest_all": "1800000",
+    "m_money_positions_long_all": "280000",
+    "m_money_positions_short_all": "160000",
+    "prod_merc_positions_long": "600000",
+    "prod_merc_positions_short": "760000",
+    "traders_tot_all": "350"
+  },
+  {
+    "report_date_as_yyyy_mm_dd": "2026-05-05T00:00:00.000",
+    "cftc_contract_market_code": "067651",
+    "market_and_exchange_names": "WTI FINANCIAL CRUDE OIL - NEW YORK MERCANTILE EXCHANGE",
+    "open_interest_all": "1810000",
+    "m_money_positions_long_all": "300000",
+    "m_money_positions_short_all": "150000",
+    "prod_merc_positions_long": "610000",
+    "prod_merc_positions_short": "780000",
+    "traders_tot_all": "352"
+  },
+  {
+    "report_date_as_yyyy_mm_dd": "2026-05-12T00:00:00.000",
+    "cftc_contract_market_code": "067651",
+    "market_and_exchange_names": "WTI FINANCIAL CRUDE OIL - NEW YORK MERCANTILE EXCHANGE",
+    "open_interest_all": "1820000",
+    "m_money_positions_long_all": "320000",
+    "m_money_positions_short_all": "140000",
+    "prod_merc_positions_long": "620000",
+    "prod_merc_positions_short": "800000",
+    "traders_tot_all": "351"
+  },
+  {
+    "report_date_as_yyyy_mm_dd": "2026-05-19T00:00:00.000",
+    "cftc_contract_market_code": "067651",
+    "market_and_exchange_names": "WTI FINANCIAL CRUDE OIL - NEW YORK MERCANTILE EXCHANGE",
+    "open_interest_all": "1830000",
+    "m_money_positions_long_all": "360000",
+    "m_money_positions_short_all": "120000",
+    "prod_merc_positions_long": "630000",
+    "prod_merc_positions_short": "820000",
+    "traders_tot_all": "349"
+  }
+]

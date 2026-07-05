@@ -1,0 +1,142 @@
+[project]
+name = "futur3"
+version = "0.0.1"
+description = "Event-driven futures trading engine — strategy-agnostic execution, data-integrity, and validation apparatus."
+authors = [{ name = "Jacob Ribbe", email = "jacobribbofficial@gmail.com" }]
+requires-python = ">=3.12"
+license = { text = "Proprietary" }
+readme = "README.md"
+
+# Runtime dependencies — free-first.
+# Pinned to floor-version-or-above; lock-file holds reproducible versions.
+dependencies = [
+    # Broker / data
+    "ib_async >= 2.0.1",          # IBKR TWS API; ib_insync community fork
+    "curl_cffi >= 0.7.0",          # CME Cloudflare WAF defense; libcurl-impersonate
+    "requests >= 2.32",            # HTTP fallback
+    "websockets >= 13.0",          # WS clients for crypto venues (Phase A1.10+)
+    "ccxt >= 4.4",                 # Multi-venue crypto unified API
+
+    # HTML parsing (CME public settlements scraper — A1.3 keystone)
+    "lxml >= 5.0",                 # Fast C-backed HTML parser; bug class 9 robustness via malformed-HTML handling
+    "beautifulsoup4 >= 4.12",      # CSS-selector API over lxml — resilient against CME page chrome variation
+
+    # Storage + query
+    "pyarrow >= 16.0",             # Parquet read/write
+    "polars >= 1.0",               # DataFrame
+    "duckdb >= 1.2",               # OLAP query over Parquet
+
+    # Time + TZ
+    "python-dateutil >= 2.9",
+    "tzdata >= 2024.1",            # CRITICAL Windows dep
+
+    # Stats (survival gate + statistical hygiene)
+    "numpy >= 2.0",
+    "scipy >= 1.13",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest >= 8.0",
+    "pytest-asyncio >= 0.23",
+    "hypothesis >= 6.100",         # property tests for verifier
+    "mypy >= 1.10",                # type-checking
+    "ruff >= 0.5",                 # lint + format
+]
+databento = [
+    "databento >= 0.40",           # institutional CME historical (PAYG $125 credit); LIVE pulls only
+]
+
+[build-system]
+requires = ["setuptools >= 70", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["futur3*"]
+exclude = ["tests*", "research*", "planning*", "reference*", "sessions*"]
+
+[tool.pytest.ini_options]
+minversion = "8.0"
+testpaths = ["tests"]
+# Repo root on sys.path so the `futur3` package + committed research artifacts
+# resolve without requiring an editable install.
+pythonpath = ["."]
+python_files = "test_*.py"
+python_classes = "Test*"
+python_functions = "test_*"
+addopts = [
+    "-ra",
+    "--strict-markers",
+    "--strict-config",
+    "--showlocals",
+    # Default run hits ZERO live endpoints (conftest discipline). Integration tests
+    # (live IB Gateway etc.) are deselected here; run them explicitly with `pytest -m integration`
+    # (CLI -m overrides this). Wires the contract the INTEGRATION_SMOKE.md docs already promise.
+    "-m",
+    "not integration",
+]
+markers = [
+    "slow: tests > 5s; skip by default in fast iterations",
+    "integration: requires external service (IBKR Gateway etc.)",
+    "bitrepro: bit-reproducibility hard-gate enforcement test",
+]
+
+[tool.mypy]
+python_version = "3.12"
+strict = true
+disallow_untyped_defs = true
+disallow_incomplete_defs = true
+warn_return_any = true
+warn_unused_ignores = true
+
+[[tool.mypy.overrides]]
+module = "databento.*"
+ignore_missing_imports = true      # vendor SDK behind the sources/ seam; live-only, not installed for CI
+
+[tool.ruff]
+line-length = 100
+target-version = "py312"
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "N", "UP", "B", "A", "C4", "SIM", "PL", "RUF"]
+ignore = [
+    "PLR0913",   # too-many-args; acceptable for ABC signatures
+    "N818",      # Exception suffix; futur3 follows Python ecosystem convention (StopIteration,
+                 # KeyboardInterrupt) — semantic names like `BarsNotSupported`, `SchemaMismatch`,
+                 # `ContractNotConfigured`, `MalformedSettlementPage` read more naturally than
+                 # forced "*Error" suffixes.
+    "RUF003",    # Ambiguous unicode in comments; em-dash + bullet are deliberate prose markers.
+]
+
+[tool.ruff.lint.per-file-ignores]
+# Tests use intentional patterns flagged as code-smells in production
+"tests/**/*.py" = [
+    "N801",      # Class naming `TestA1_X_Foo` (underscore + numeric versioning) is the
+                 # documented Phase A1 test convention; matches A1.0/A1.1/A1.2/A1.3 step IDs.
+    "PLR2004",   # Magic value comparisons are the POINT of tests (assertEquals to specific
+                 # numbers); requiring constants for every literal makes tests less readable.
+]
+# Lazy vendor SDK imports are intentional — defer vendor cost to instantiation, not module import
+"**/cme_eod.py" = [
+    "PLC0415",
+]
+"**/ibkr_historical.py" = [
+    "PLC0415",
+]
+"**/fred_macro.py" = [
+    "PLC0415",
+]
+"**/bls_macro.py" = [
+    "PLC0415",
+]
+"**/cftc.py" = [
+    "PLC0415",
+]
+"**/databento_hist.py" = [
+    "PLC0415",
+]
+# conftest test fixtures use late binding for fixture-only imports
+"**/conftest.py" = [
+    "PLC0415",
+]

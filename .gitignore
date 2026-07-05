@@ -1,0 +1,74 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+.venv/
+venv/
+env/
+ENV/
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# Test + coverage
+.pytest_cache/
+.coverage
+htmlcov/
+.tox/
+.nox/
+.cache/
+.mypy_cache/
+.ruff_cache/
+.hypothesis/
+
+# Data archives (NEVER commit raw data; archives are local-only)
+# IMPORTANT: anchored to repo root (`/data/`) — the previous unanchored `data/` rule
+# also excluded futur3/data/ (the Python package!) which is real source code.
+# Fix: anchor to root + explicit subdir paths for archive storage.
+/data/
+data/cme_eod_archive/
+data/ibkr_archive/
+*.parquet
+*.jsonl
+*.csv
+!tests/fixtures/**/*.parquet
+
+# Secrets
+.env
+*.key
+*.pem
+config.local.*
+**/secrets.*
+
+# IDE
+.idea/
+.vscode/
+*.swp
+.DS_Store
+Thumbs.db
+
+# Local artifacts
+*.log
+*.partial
+
+# Licensed market data (Databento DBN) — MUST NOT be committed (redistribution license)
+*.dbn
+*.dbn.zst
+c2_cache/
+*.tmp
+.scratch/
